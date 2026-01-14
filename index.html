@@ -23,7 +23,7 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
     consent: form.consent.checked
   };
 
-  const backendUrl = 'https://YOUR_RENDER_BACKEND_URL/lead'; // Replace with your Render URL
+  const backendUrl = https://'https://credit-app-m8we.onrender.com'; // Replace with your Render URL
 
   const res = await fetch(backendUrl, {
     method: 'POST',
@@ -35,3 +35,4 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
   alert(result.message + (result.status ? " | Status: " + result.status : ""));
 });
 </script>
+
