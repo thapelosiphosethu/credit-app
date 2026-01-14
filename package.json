@@ -1,3 +1,18 @@
-"scripts": {
-  "start": "node server.js"
+{
+  "name": "credit-app",
+  "version": "1.0.0",
+  "description": "Credit lead and staff management app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
 }
+
