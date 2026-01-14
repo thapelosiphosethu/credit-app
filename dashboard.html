@@ -1,0 +1,25 @@
+<h2>Admin Dashboard</h2>
+
+<h3>Leads</h3>
+<ul id="leads"></ul>
+
+<h3>Attendance</h3>
+<ul id="attendance"></ul>
+
+<script>
+fetch("http://localhost:3000/leads")
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(l => {
+      leads.innerHTML += `<li>${l.fullname} - ${l.phone} - Income: ${l.income}</li>`;
+    });
+  });
+
+fetch("http://localhost:3000/attendance")
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(a => {
+      attendance.innerHTML += `<li>Staff ID: ${a.staff_id} | In: ${a.clock_in} | Out: ${a.clock_out}</li>`;
+    });
+  });
+</script>

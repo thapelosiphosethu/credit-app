@@ -1,0 +1,21 @@
+<h2>Clocking</h2>
+<button onclick="clockin()">Clock In</button>
+<button onclick="clockout()">Clock Out</button>
+
+<script>
+function clockin() {
+  fetch("http://localhost:3000/clockin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ staff_id: 1 })
+  }).then(() => alert("Clocked In"));
+}
+
+function clockout() {
+  fetch("http://localhost:3000/clockout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ staff_id: 1 })
+  }).then(() => alert("Clocked Out"));
+}
+</script>
