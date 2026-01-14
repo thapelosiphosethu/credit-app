@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('./database');
+// const db = require('./database'); // COMMENTED OUT for now
 
 const app = express();
 app.use(cors());
@@ -15,81 +15,50 @@ const SECRET = "secretkey";
 app.post('/lead', (req, res) => {
   const { fullname, phone, income, debt } = req.body;
 
-  db.run(
-    `INSERT INTO leads (fullname, phone, income, debt) VALUES (?, ?, ?, ?)`,
-    [fullname, phone, income, debt],
-    () => res.json({ message: "Lead submitted" })
-  );
-});
-
-/* STAFF REGISTER (ONE TIME) */
-app.post('/register', async (req, res) => {
-  const hashed = await bcrypt.hash(req.body.password, 10);
-
-  db.run(
-    `INSERT INTO staff (email, password) VALUES (?, ?)`,
-    [req.body.email, hashed],
-    () => res.json({ message: "Staff created" })
-  );
-});
-
-/* STAFF LOGIN */
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-
-  db.get(`SELECT * FROM staff WHERE email = ?`, [email], async (err, user) => {
-    if (!user) return res.status(401).json({ error: "Invalid login" });
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(401).json({ error: "Invalid login" });
-
-    const token = jwt.sign({ id: user.id }, SECRET);
-    res.json({ token });
-  });
-});
-
-/* CLOCK IN */
-app.post('/clockin', (req, res) => {
-  db.run(
-    `INSERT INTO clocking (staff_id, clock_in) VALUES (?, datetime('now'))`,
-    [req.body.staff_id],
-    () => res.json({ message: "Clocked in" })
-  );
-});
-
-/* CLOCK OUT */
-app.post('/clockout', (req, res) => {
-  db.run(
-    `UPDATE clocking SET clock_out = datetime('now') WHERE staff_id = ? AND clock_out IS NULL`,
-    [req.body.staff_id],
-    () => res.json({ message: "Clocked out" })
-  );
-});
-
-app.listen(3000, () => console.log("Server running on http://localhost:3000"));
-/* VIEW LEADS */
-app.get('/leads', (req, res) => {
-  db.all(`SELECT * FROM leads ORDER BY created_at DESC`, [], (err, rows) => {
-    res.json(rows);
-  });
-});
-
-/* VIEW CLOCKING */
-app.get('/attendance', (req, res) => {
-  db.all(`SELECT * FROM clocking`, [], (err, rows) => {
-    res.json(rows);
-  });
-});
-app.post('/lead', (req, res) => {
-  const { fullname, phone, income, debt } = req.body;
+  console.log('New lead:', { fullname, phone, income, debt });
 
   let status = "Good";
   if (parseInt(debt) > parseInt(income)) status = "High Debt";
   if (parseInt(income) < 8000) status = "Low Income";
 
-  db.run(
-    `INSERT INTO leads (fullname, phone, income, debt) VALUES (?, ?, ?, ?)`,
-    [fullname, phone, income, debt],
-    () => res.json({ message: "Lead submitted", status })
-  );
+  res.json({ message: "Lead submitted", status });
 });
+
+/* STAFF REGISTER (ONE TIME) */
+app.post('/register', async (req, res) => {
+  console.log('Staff registration:', req.body);
+  res.json({ message: "Staff created (simulation)" });
+});
+
+/* STAFF LOGIN */
+app.post('/login', async (req, res) => {
+  console.log('Staff login attempt:', req.body);
+  res.json({ token: "FAKE-JWT-TOKEN" });
+});
+
+/* CLOCK IN */
+app.post('/clockin', (req, res) => {
+  console.log('Clock in:', req.body);
+  res.json({ message: "Clocked in (simulated)" });
+});
+
+/* CLOCK OUT */
+app.post('/clockout', (req, res) => {
+  console.log('Clock out:', req.body);
+  res.json({ message: "Clocked out (simulated)" });
+});
+
+/* VIEW LEADS */
+app.get('/leads', (req, res) => {
+  console.log('Fetch leads request');
+  res.json([{ fullname: "Test Lead", phone: "072...", income: "5000", debt: "10000", status: "High Debt" }]);
+});
+
+/* VIEW CLOCKING */
+app.get('/attendance', (req, res) => {
+  console.log('Fetch attendance request');
+  res.json([{ staff_id: 1, clock_in: "2026-01-14 08:00", clock_out: "2026-01-14 17:00" }]);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
