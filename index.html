@@ -35,4 +35,44 @@ function send() {
     })
   }).then(() => alert("Submitted"));
 }
+  <h2>Submit Your Lead</h2>
+<form id="leadForm">
+  <input type="text" name="fullname" placeholder="Full Name" required>
+  <input type="text" name="phone" placeholder="Phone Number" required>
+  <input type="number" name="income" placeholder="Monthly Income" required>
+  <input type="number" name="debt" placeholder="Debt Amount" required>
+  <label>
+    <input type="checkbox" name="consent" required> I consent
+  </label>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById('leadForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+
+  const data = {
+    fullname: form.fullname.value,
+    phone: form.phone.value,
+    income: form.income.value,
+    debt: form.debt.value,
+    consent: form.consent.checked
+  };
+
+  // <-- Replace this URL with your live Render backend
+  const backendUrl = 'https://credit-app-m8we.onrender.com/lead';
+
+  const res = await fetch(backendUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  alert(result.message + (result.status ? " | Status: " + result.status : ""));
+});
 </script>
+
+</script>
+
