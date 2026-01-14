@@ -1,41 +1,4 @@
-<h2>Debt Assistance Form</h2>
-<input id="name" placeholder="Full Name"><br>
-<input id="phone" placeholder="Phone"><br>
-<input id="income" placeholder="Income"><br>
-<input id="debt" placeholder="Debt"><br>
-<script>
-function send() {
-  fetch("http://localhost:3000/lead", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      fullname: name.value,
-      phone: phone.value,
-      income: income.value,
-      debt: debt.value
-    })
-  }).then(() => {
-    window.location.href =
-      "https://wa.me/27720731691?text=Hi%20I%20need%20help%20with%20debt%20review";
-  });
-}
-</script>
-
-
-<script>
-function send() {
-  fetch("http://localhost:3000/lead", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      fullname: name.value,
-      phone: phone.value,
-      income: income.value,
-      debt: debt.value
-    })
-  }).then(() => alert("Submitted"));
-}
-  <h2>Submit Your Lead</h2>
+<h2>Submit Your Lead</h2>
 <form id="leadForm">
   <input type="text" name="fullname" placeholder="Full Name" required>
   <input type="text" name="phone" placeholder="Phone Number" required>
@@ -73,6 +36,3 @@ document.getElementById('leadForm').addEventListener('submit', async (e) => {
   alert(result.message + (result.status ? " | Status: " + result.status : ""));
 });
 </script>
-
-</script>
-
